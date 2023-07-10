@@ -1,4 +1,4 @@
-,Shelter Name,Borough,Address,City Per Diem Nightly Rate,Geocoded latitude,Geocoded longitude,Geocoded address
+,Shelter Name,Borough,Address,nightlyrate,Geocoded latitude,Geocoded longitude,Geocoded address
 0,Stewart Hotel,Manhattan,"371 7th Avenue, NY",55,40.7488468,-73.99197087,"371 7th Ave, New York, New York, 10001"
 1,Artel 535,Brooklyn,"535 Van Buren Street, NY",143,40.69186,-73.92761,
 2,Radisson,Manhattan,"52 William Street, NY",270,40.70682,-74.00911,

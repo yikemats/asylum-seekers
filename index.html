@@ -1,14 +1,85 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <html lang=”en”>
 
-<head>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Title -->
     <title>NYC Pays Forward to Immigrants</title>
 
     <!-- Bulma Stylesheet -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+    <!-- D3 -->
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="custom.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+    <script>
+     d3.csv("hotel_list_d3.csv")        
+        .then(data => {
+          console.log(data)
+
+        const myChart = d3
+           .select('#my-svg-chart')
+           .append('svg')
+           .attr('width', 640)
+           .attr('height', 640)
+        const hotels = myChart
+            .selectAll('rect')
+           .data(data)
+           .join('rect');
+        const gridSize = 20, gap = 2;
+
+        hotels
+           .attr('x', (d,i) => {
+             return Math.floor(i%25)*(gridSize+ gap);
+           })
+           .attr('y', (d,i) => {
+             return Math.floor(i/25)*(gridSize+ gap);
+           })
+           .attr('width', gridSize)
+           .attr('height', gridSize)
+
+        hotels.style('fill', d=> {
+           if (d.cost < 100) {return '#E0E0E0'}
+           else if (d.cost < 200) {return '#ffff66'}
+           else if (d.cost < 300) {return '#ff8000'}
+           else if (d.cost >= 300) {return '#ff0000'}
+        })
+        const colors = ["#ff0000", "#ff8000", "#ffff66", "#E0E0E0"];
+
+        const legendWidth = 20;
+        const legendHeight = 20;
+        const legendPadding = 120;//legend gap
+        const legendX = 20;
+        const legendY = 100;
+
+        const legend = myChart.append("g")
+          .attr("class", "legend")
+          .attr("transform", `translate(${legendX}, ${legendY})`);
+
+        const legendItems = legend.selectAll(".legend-item")
+          .data(colors)
+          .enter()
+          .append("g")
+          .attr("class", "legend-item")
+          .attr("transform", (d, i) => `translate( ${i * (legendHeight + legendPadding)},0)`);
+        legendItems.append("rect")
+          .attr("width", legendWidth)
+          .attr("height", legendHeight)
+          .attr("fill", d => d);
+
+        const labels = ["Over $300", "$200 ~ 299", "$100 ~ $199", "Under $99"];
+
+        legendItems.append("text")
+          .attr("x", legendWidth + 5)
+          .attr("y", legendHeight / 2)
+          .attr("alignment-baseline", "middle")
+          .text((d, i) => labels[i]);
+        })
+    </script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="192x192" href="favicon-192x192.png" />
@@ -89,9 +160,9 @@
 
     </style>
     
-</head>
+  </head>
 
-<body>
+  <body>
 
     <div class='text-container'>
 
@@ -133,6 +204,12 @@
 
             <div class="flourish-embed flourish-map" data-src="visualisation/14367354" alt="A map of hotels where asylum seekers stay."><script src="https://public.flourish.studio/resources/embed.js"></script></div>
 
+            <div class="chart-holder"></div>
+                <h5>The City's Finances Are in Dire Straits</h5>
+                <p class="subtitle is-4">A heat map was created for the per-night charges paid by NYC to the 37 hotels listed. There were only two hotels charging below $100, while a staggering seven hotels charged over $300.</p>
+                <div id="my-svg-chart" alt="Heat chart of the hotel costs"></div>
+            </div>
+
             <p>While New Yorkers may find it perplexing why such substantial fees are paid for immigrants, as someone born in Japan where immigrant numbers are scarce, I couldn't help but think, "Americans have an admirable culture of paying it forward!" This thought raised a question: When will the costs of accepting immigrants be offset by the amount they pay in taxes to the government through their labor?</p>
 
             <p>Let's find out!</p>
@@ -165,6 +242,6 @@
 
     </div>
 
-</body>
+  </body>
 
 </html>
