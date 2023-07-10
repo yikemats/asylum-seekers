@@ -24,7 +24,7 @@
         const myChart = d3
            .select('#my-svg-chart')
            .append('svg')
-           .attr('width', 660)
+           .attr('width', 600)
            .attr('height', 160)
         const hotels = myChart
             .selectAll('rect')
@@ -34,10 +34,10 @@
 
         hotels
            .attr('x', (d,i) => {
-             return Math.floor(i%30)*(gridSize+ gap);
+             return Math.floor(i%25)*(gridSize+ gap);
            })
            .attr('y', (d,i) => {
-             return Math.floor(i/30)*(gridSize+ gap);
+             return Math.floor(i/25)*(gridSize+ gap);
            })
            .attr('width', gridSize)
            .attr('height', gridSize)
